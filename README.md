@@ -1,12 +1,12 @@
 ---
 title: Token-Controlled Token Circulation 
 description: <Description is one full (short) sentence>
-author: <a comma separated list of the author's or authors' name + GitHub username (in parenthesis), or name and email (in angle brackets).  Example, FirstName LastName (@GitHubUsername), FirstName LastName <foo@bar.com>, FirstName (@GitHubUsername) and GitHubUsername (@GitHubUsername)>
+author: Ko Fujimura (@kofujimura)
 discussions-to: <URL>
 status: Draft
-type: <Standards Track, Meta, or Informational>
-category: <Core, Networking, Interface, or ERC> # Only required for Standards Track. Otherwise, remove this field.
-created: <date created on, in ISO 8601 (yyyy-mm-dd) format>
+type: Standards Track or Informational
+category: ERC
+created: 2023-06-11
 requires: <EIP number(s)> # Only required when you reference an EIP in the `Specification` section. Otherwise, remove this field.
 ---
 
@@ -29,7 +29,8 @@ requires: <EIP number(s)> # Only required when you reference an EIP in the `Spec
 
   TODO: Remove this comment before submitting
 -->
-
+This EIP presents a new access control scheme called Token-Control Token Circulation (TCTC). This scheme enables the control of transaction access based on token ownership.
+  
 ## Motivation
 
 <!--
@@ -41,8 +42,12 @@ requires: <EIP number(s)> # Only required when you reference an EIP in the `Spec
 
   TODO: Remove this comment before submitting
 -->
+TCTC enables the control of transaction access based on token ownership. The TokenController.sol contract required for implementing this scheme is just 30 lines long. By utilizing the ERC721 platform, it becomes possible to grant and revoke specific roles, such as MINTER_ROLE and BURNER_ROLE, for the target token. Moreover, privileges like MINTER_ROLE can be visualized as tokens, providing a user-friendly interface for many users to understand easily.
+
+Use case ...
 
 ## Specification
+< if informational, this section will be deleted >
 
 <!--
   The Specification section should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Ethereum platforms (besu, erigon, ethereumjs, go-ethereum, nethermind, or others).
@@ -92,6 +97,8 @@ No backward compatibility issues found.
   TODO: Remove this comment before submitting
 -->
 
+Needs discussion.
+
 ## Reference Implementation
 
 <!--
@@ -103,6 +110,40 @@ No backward compatibility issues found.
   TODO: Remove this comment before submitting
 -->
 
+'''
+// SPDX-License-Identifier: Apache-2.0
+// Author: Ko Fujimura <ko@fujimura.com>
+// Open source repo: https://github.com/kofujimura/TCTC
+
+pragma solidity ^0.8.9;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+contract TokenController {
+    mapping (bytes32 => address []) private _controlTokens;
+
+    modifier onlyHasToken(bytes32 r, address u) {
+        require(_checkHasToken(r,u), "TokenController: not has a required token");
+        _;
+    }
+
+    // Specifies the contract ID of the token that must be owned by a user with the 
+    // specified role. Multiple calls are allowed, in this case the user must own at 
+    // least one of the specified token.
+    function _grantRoleByToken (bytes32 r, address c) internal {
+        _controlTokens[r].push(c);
+    }
+
+    function _checkHasToken (bytes32 r, address u) internal view returns (bool) {
+        for (uint i = 0; i < _controlTokens[r].length; i++) {
+            if (IERC721(_controlTokens[r][i]).balanceOf(u) > 0) return true;
+        }
+        return false;
+    }
+}
+'''
+  
+  
 ## Security Considerations
 
 <!--
