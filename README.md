@@ -110,7 +110,7 @@ Needs discussion.
   TODO: Remove this comment before submitting
 -->
 
-'''
+```
 // SPDX-License-Identifier: Apache-2.0
 // Author: Ko Fujimura <ko@fujimura.com>
 // Open source repo: https://github.com/kofujimura/TCTC
@@ -141,7 +141,7 @@ contract TokenController {
         return false;
     }
 }
-'''
+```
   
   
 ## Security Considerations
