@@ -1,6 +1,6 @@
 ---
 title: Token-Controlled Token Circulation 
-description: <Description is one full (short) sentence>
+description: Access control scheme based on token ownership.
 author: Ko Fujimura (@kofujimura)
 discussions-to: <URL>
 status: Draft
