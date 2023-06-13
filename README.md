@@ -20,10 +20,16 @@ There are numerous methods to implement access control for privileged actions. A
 Use case ...
 
 ## Specification
-< if informational, this section will be deleted >
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
+1. Smart contracts implementing the ERC-XXXX standard MUST implement privileges required by the role as token specified in ERC721 interface.
+2. To assign a role to the account, ERC721 `mint` method MUST be used.
+3. To revoke a role from the account, ERC721 `burn` method MUST be used.
+4. To check if the account has the required role, check that the balance of the control token MUST greater than 0 using ERC721 `balanceOf` method. 
+5. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a
+`keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
+  
 ## Rationale
 
 <!--
