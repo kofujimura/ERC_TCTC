@@ -7,11 +7,11 @@ status: Draft
 type: Standards Track or Informational
 category: ERC
 created: 2023-06-11
-requires: <EIP number(s)> # Only required when you reference an EIP in the `Specification` section. Otherwise, remove this field.
+requires: EIP-721
 ---
 ## Abstract
 
-This EIP presents a new access control scheme called Token-Control Token Circulation (TCTC). By representing roles or privileges as tokens, the need for developing off-chain tools that grant or revoke role is eliminated. This approach can potentially enhance system security and decrease development costs.
+This EIP presents a new access control scheme called Token-Control Token Circulation (TCTC). By representing roles or privileges as EIP-721 tokens, the need for developing off-chain tools that grant or revoke role is eliminated. This approach can potentially enhance system security and decrease development costs.
   
 ## Motivation
 
@@ -23,12 +23,11 @@ Use case ...
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
-1. Smart contracts implementing the ERC-XXXX standard MUST implement privileges required by the role as token specified in ERC721 interface. The tokens that represent privileges are called `control token` in this EIP.
-2. To grant a role to the account, ERC721 `mint` method of the control token MUST be used.
-3. To revoke a role from the account, ERC721 `burn` method of the control token MUST be used.
-4. To check if the account has the required role, check that the balance of the control token MUST greater than 0 using ERC721 `balanceOf` method. 
-5. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a
-`keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
+1. Smart contracts implementing the ERC-XXXX standard MUST implement privilege required by the role as a EIP-721 token. The tokens that represent privileges are called `control token` in this EIP.
+2. To grant a role to the account, a `control token` that represent privilege SHOULD be minted to the account using `mint` or `safeMint` method defined in EIP-721.
+3. To revoke a role from the account, the `control token` that represent privilege SHOULD be burned using `burn` method defined in EIP-721.
+4. To check if the account has the required role, a comliant smart contract SHOULD check that the balance of the control token MUST greater than 0 using `balanceOf` method defined in EIP-721. 
+5. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a `keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
   
 ## Rationale
 
@@ -63,8 +62,6 @@ Needs discussion.
 
 ```
 // SPDX-License-Identifier: Apache-2.0
-// Author: Ko Fujimura <ko@fujimura.com>
-// Open source repo: https://github.com/kofujimura/TCTC
 
 pragma solidity ^0.8.9;
 
@@ -94,6 +91,41 @@ contract TokenController {
 }
 ```
   
+Here’s a simple example of using `TokenController` in an ERC721 token to define a "minter" and "burner" role, which allows accounts that have it create new tokens and destroy existing tokens by specifying the controll token:  
+ 
+```
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.9;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "./TokenController.sol";
+
+contract MyToken is ERC721, TokenController {
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant BURNER_ROLE = keccak256("HOLDER_ROLE");
+
+    constructor() ERC721("MyToken", "MTK") {
+        // Specifies the deployed contract ID of the control token.
+        // This sample contract is deployed on Goerli.
+        _grantRoleByToken(MINTER_ROLE, 0xF1e33c646a12F68bC8015b4AED29BB316fA2D593);
+        _grantRoleByToken(BURNER_ROLE, 0xcDc6fD5F29E2641f25c90235eDA984f99aA3a1DD);
+    }
+
+    function safeMint(address to, uint256 tokenId)
+        public onlyHasToken(MINTER_ROLE, msg.sender)
+    {
+        _safeMint(to, tokenId);
+    }
+
+    function burn(uint256 tokenId)
+        public onlyHasToken(BURNER_ROLE, msg.sender)
+    {
+        _burn(tokenId);
+    }
+}  
+```
   
 ## Security Considerations
 
