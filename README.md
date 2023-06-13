@@ -26,7 +26,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 1. Smart contracts implementing the ERC-XXXX standard MUST implement privilege required by the role as a EIP-721 token. The tokens that represent privileges are called `control token` in this EIP.
 2. To grant a role to the account, a `control token` that represent privilege SHOULD be minted to the account using `mint` or `safeMint` method defined in EIP-721.
 3. To revoke a role from the account, the `control token` that represent privilege SHOULD be burned using `burn` method defined in EIP-721.
-4. To check if the account has the required role, a comliant smart contract SHOULD check that the balance of the control token MUST greater than 0 using `balanceOf` method defined in EIP-721. 
+4. To check if the account has the required role, a compliant smart contract SHOULD check that the balance of the control token MUST greater than 0 using `balanceOf` method defined in EIP-721. 
 5. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a `keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
   
 ## Rationale
