@@ -4,9 +4,9 @@ description: Access control scheme based on token ownership.
 author: Ko Fujimura (@kofujimura)
 discussions-to: <URL>
 status: Draft
-type: Standards Track or Informational
+type: Standards Track
 category: ERC
-created: 2023-06-11
+created: 2023-06-14
 requires: EIP-721
 ---
 ## Abstract
@@ -17,7 +17,7 @@ This EIP presents a new access control scheme called Token-Control Token Circula
 
 There are numerous methods to implement access control for privileged actions. A commonly utilized pattern is "role-based" access control as specified in EIP-5982. This method, however, necessitates the use of an off-chain management tool to grant or revoke required roles through its interface. Additionally, as many wallets lack a user interface that displays the privileges granted by a role, users are often unable to comprehend the status of their privileges through the wallet.
 
-Use case <to be added>
+Use cases to be added.
 
 ## Specification
 
@@ -26,7 +26,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 1. Smart contracts implementing the EIP-XXXX(this EIP) standard MUST represent the privilege required by the role as an EIP-721 token. The tokens that represent privileges are called `control tokens` in this EIP.
 2. To grant a role to an account, a `control token` representing the privilege SHOULD be minted to the account using `safeMint` method defined in ERC-5679.
 3. To revoke a role from an account, the `control token` representing the privilege SHOULD be burned using the burn method defined in EIP-5679.
-4. To check if an account has the required role, a compliant smart contract SHOULD verify that the balance of the control token is greater than 0 using the `balanceOf` method defined in EIP-721.  
+4. To check if an account has the required role, a compliant smart contract SHOULD verify that the balance of the `control token` is greater than 0 using the `balanceOf` method defined in EIP-721.  
 5. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a `keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
   
 ## Rationale
@@ -64,9 +64,13 @@ contract TokenController {
         _;
     }
 
-    // Specifies the contract ID of the token that must be owned by a user with the 
-    // specified role. Multiple calls are allowed, in this case the user must own at 
-    // least one of the specified token.
+    /**
+     * @notice Grant a role to user who owns a control token specified by the contract ID. 
+     * Multiple calls are allowed, in this case the user must own at least one of the 
+     * specified token.
+     * @param r byte32 The role which you want to grant.
+     * @param c address The address of contract ID of which token the user required to own.
+     */
     function _grantRoleByToken (bytes32 r, address c) internal {
         _controlTokens[r].push(c);
     }
@@ -96,10 +100,8 @@ contract MyToken is ERC721, TokenController {
     bytes32 public constant BURNER_ROLE = keccak256("HOLDER_ROLE");
 
     constructor() ERC721("MyToken", "MTK") {
-        // Specifies the deployed contract ID of the control token.
-        // This sample contract is deployed on Goerli.
-        _grantRoleByToken(MINTER_ROLE, 0xF1e33c646a12F68bC8015b4AED29BB316fA2D593);
-        _grantRoleByToken(BURNER_ROLE, 0xcDc6fD5F29E2641f25c90235eDA984f99aA3a1DD);
+        _grantRoleByToken(MINTER_ROLE, 0x...);
+        _grantRoleByToken(BURNER_ROLE, 0x...);
     }
 
     function safeMint(address to, uint256 tokenId)
