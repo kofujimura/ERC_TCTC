@@ -15,18 +15,18 @@ This EIP presents a new access control scheme called Token-Control Token Circula
   
 ## Motivation
 
-There are numerous methods to implement access control for privileged actions. A commonly utilized pattern is "role-based" access control as specified in ERC-5982. This method, however, necessitates the use of an off-chain management tool to grant or revoke required roles through its interface. Additionally, as many wallets lack a user interface that displays the privileges granted by a role, users are often unable to comprehend the status of their privileges through the wallet.
-  
-Use case ...
+There are numerous methods to implement access control for privileged actions. A commonly utilized pattern is "role-based" access control as specified in EIP-5982. This method, however, necessitates the use of an off-chain management tool to grant or revoke required roles through its interface. Additionally, as many wallets lack a user interface that displays the privileges granted by a role, users are often unable to comprehend the status of their privileges through the wallet.
+
+Use case <to be added>
 
 ## Specification
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
-1. Smart contracts implementing the ERC-XXXX standard MUST implement privilege required by the role as a EIP-721 token. The tokens that represent privileges are called `control token` in this EIP.
-2. To grant a role to the account, a `control token` that represent privilege SHOULD be minted to the account using `mint` or `safeMint` method defined in EIP-721.
-3. To revoke a role from the account, the `control token` that represent privilege SHOULD be burned using `burn` method defined in EIP-721.
-4. To check if the account has the required role, a compliant smart contract SHOULD check that the balance of the control token MUST greater than 0 using `balanceOf` method defined in EIP-721. 
+1. Smart contracts implementing the EIP-XXXX(this EIP) standard MUST represent the privilege required by the role as an EIP-721 token. The tokens that represent privileges are called `control tokens` in this EIP.
+2. To grant a role to an account, a `control token` representing the privilege SHOULD be minted to the account using `safeMint` method defined in ERC-5679.
+3. To revoke a role from an account, the `control token` representing the privilege SHOULD be burned using the burn method defined in EIP-5679.
+4. To check if an account has the required role, a compliant smart contract SHOULD verify that the balance of the control token is greater than 0 using the `balanceOf` method defined in EIP-721.  
 5. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a `keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
   
 ## Rationale
@@ -42,24 +42,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 TBD
 
 ## Backwards Compatibility
-  
-No backward compatibility issues found.
 
-## Test Cases
-
-Needs discussion.
+This EIP is designed to be compatible for EIP-721, EIP-1155, and EIP-5679 respectively.
 
 ## Reference Implementation
 
-<!--
-  This section is optional.
-
-  The Reference Implementation section should include a minimal implementation that assists in understanding or implementing this specification. It should not include project build files. The reference implementation is not a replacement for the Specification section, and the proposal should still be understandable without it.
-  If the reference implementation is too large to reasonably be included inline, then consider adding it as one or more files in `../assets/eip-####/`. External links will not be allowed.
-
-  TODO: Remove this comment before submitting
--->
-
+The following presents a straightforward example of a contract that implements a modifier. This modifier checks if an account possesses the necessary role, and the contract includes a function that grants a specific role to a designated account.
+  
 ```
 // SPDX-License-Identifier: Apache-2.0
 
@@ -90,9 +79,9 @@ contract TokenController {
     }
 }
 ```
+
+The following is a simple example of utilizing `TokenController` within an ERC721 token to define "minter" and "burner" roles. Accounts possessing these roles are allowed to create new tokens and destroy existing tokens, facilitated by specifying the control token:  
   
-Here’s a simple example of using `TokenController` in an ERC721 token to define a "minter" and "burner" role, which allows accounts that have it create new tokens and destroy existing tokens by specifying the controll token:  
- 
 ```
 // SPDX-License-Identifier: MIT
 
@@ -128,14 +117,6 @@ contract MyToken is ERC721, TokenController {
 ```
   
 ## Security Considerations
-
-<!--
-  All EIPs must contain a section that discusses the security implications/considerations relevant to the proposed change. Include information that might be important for security discussions, surfaces risks and can be used throughout the life cycle of the proposal. For example, include security-relevant design decisions, concerns, important discussions, implementation-specific guidance and pitfalls, an outline of threats and risks and how they are being addressed. EIP submissions missing the "Security Considerations" section will be rejected. An EIP cannot proceed to status "Final" without a Security Considerations discussion deemed sufficient by the reviewers.
-
-  The current placeholder is acceptable for a draft.
-
-  TODO: Remove this comment before submitting
--->
 
 Needs discussion.
 
