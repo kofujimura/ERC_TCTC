@@ -25,7 +25,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 1. Smart contracts implementing the EIP-XXXX(this EIP) standard MUST represent the privilege required by the role as an EIP-721 token. The tokens that represent privileges are called `control tokens` in this EIP. The `control token` can be any type of token, and its transactions may be recursively controlled by another `control token`.
 2. To associate the required `control token` with the role, the address of the previously deployed contract for the `control token` MUST be used.
-3. To ascertain whether an account possesses the necessary role, it SHOULD be confirmed that the balance of the control token exceeds 0, utilizing the balanceOf method defined in EIP-721.
+3. To ascertain whether an account possesses the necessary role, it SHOULD be confirmed that the balance of the control token exceeds 0, utilizing the `balanceOf` method defined in EIP-721.
 4. To grant a role to an account, a `control token` representing the privilege SHOULD be minted to the account using `safeMint` method defined in EIP-5679.
 5. To revoke a role from an account, the `control token` representing the privilege SHOULD be burned using the `burn` method defined in EIP-5679.
 6. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a `keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
