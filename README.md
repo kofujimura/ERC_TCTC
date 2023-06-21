@@ -11,13 +11,24 @@ requires: EIP-721
 ---
 ## Abstract
 
-This EIP introduces an access control scheme termed Token-Controlled Token Circulation (TCTC). By representing the privileges associated with a role as an EIP-721 token (referred to as a control token), the processes of granting or revoking a role can be facilitated through the minting or burning of the corresponding control token.
+This EIP introduces an access control scheme termed Token-Controlled Token Circulation (TCTC). By representing the privileges associated with a role as an EIP-721 token (referred to as a `control token`), the processes of granting or revoking a role can be facilitated through the minting or burning of the corresponding `control token`. 
   
 ## Motivation
 
 There are numerous methods to implement access control for privileged actions. A commonly utilized pattern is "role-based" access control as specified in EIP-5982. This method, however, necessitates the use of an off-chain management tool to grant or revoke required roles through its interface. Additionally, as many wallets lack a user interface that displays the privileges granted by a role, users are often unable to comprehend the status of their privileges through the wallet.
 
-Use cases to be added.
+# Use Cases
+
+This EIP is applicable in many scenarios where role-based access control as described in EIP-5982 is used. Specific use cases include:
+
+Mint/Burn Authorization:
+In applications that circulate items such as tickets, coupons, membership cards, and site access rights as tokens, it is necessary to provide the system administrator with the authority to mint or burn these tokens. These permissions are realized as `control tokens`.
+
+Transfer Authorization:
+In some situations within these applications, it may be desirable to limit the ability to transfer tokens to specific agencies. In these cases, an agency certificate is issued as a 'control token'. The ownership of this control token then provides the means to regulate token transfers.
+
+Address Verification:
+Many applications require address verification to prevent errors in the recipient's address when minting or transferring target tokens. A `control token` is issued as proof of address verification to users, which is required by the recipient when a mint or transfer transaction is executed, thus preventing misdeliveries. In some instances, this `control token` for address verification may be issued by a government agency or specific company after an identity verification process.
 
 ## Specification
 
