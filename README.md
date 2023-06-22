@@ -43,14 +43,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
   
 ## Rationale
 
-<!--
-  The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
-
-  The current placeholder is acceptable for a draft.
-
-  TODO: Remove this comment before submitting
--->
-
 TBD
 
 ## Backwards Compatibility
@@ -61,7 +53,7 @@ This EIP is designed to be compatible for EIP-721, EIP-1155, and EIP-5679 respec
 
 The following presents a straightforward example of a contract that implements a modifier. This modifier checks if an account possesses the necessary role, and the contract includes a function that grants a specific role to a designated account.
   
-```
+```solidity
 // SPDX-License-Identifier: Apache-2.0
 
 pragma solidity ^0.8.9;
@@ -98,7 +90,7 @@ contract TokenController {
 
 The following is a simple example of utilizing `TokenController` within an ERC721 token to define "minter" and "burner" roles. Accounts possessing these roles are allowed to create new tokens and destroy existing tokens, facilitated by specifying the control token:  
   
-```
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.9;
