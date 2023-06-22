@@ -17,7 +17,7 @@ This EIP introduces an access control scheme termed Token-Controlled Token Circu
 
 There are numerous methods to implement access control for privileged actions. A commonly utilized pattern is "role-based" access control as specified in EIP-5982. This method, however, necessitates the use of an off-chain management tool to grant or revoke required roles through its interface. Additionally, as many wallets lack a user interface that displays the privileges granted by a role, users are often unable to comprehend the status of their privileges through the wallet.
 
-# Use Cases
+### Use Cases
 
 This EIP is applicable in many scenarios where role-based access control as described in EIP-5982 is used. Specific use cases include:
 
