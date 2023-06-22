@@ -22,10 +22,10 @@ There are numerous methods to implement access control for privileged actions. A
 This EIP is applicable in many scenarios where role-based access control as described in EIP-5982 is used. Specific use cases include:
 
 **Mint/Burn Permission:**
-In applications that circulate items such as tickets, coupons, membership cards, and site access rights as tokens, it is necessary to provide the system administrator with the authority to mint or burn these tokens. These permissions are realized as `control tokens`.
+In applications that circulate items such as tickets, coupons, membership cards, and site access rights as tokens, it is necessary to provide the system administrator with the authority to mint or burn these tokens. These permissions can be realized as `control tokens` in this scheme.
 
 **Transfer Permission:**
-In some situations within these applications, it may be desirable to limit the ability to transfer tokens to specific agencies. In these cases, an agency certificate is issued as a 'control token'. The ownership of this control token then provides the means to regulate token transfers.
+In some situations within these applications, it may be desirable to limit the ability to transfer tokens to specific agencies. In these cases, an agency certificate is issued as a `control token`. The ownership of this `control token` then provides the means to regulate token transfers.
 
 **Address Verification:**
 Many applications require address verification to prevent errors in the recipient's address when minting or transferring target tokens. A `control token` is issued as proof of address verification to users, which is required by the recipient when a mint or transfer transaction is executed, thus preventing misdeliveries. In some instances, this `control token` for address verification may be issued by a government agency or specific company after an identity verification process.
