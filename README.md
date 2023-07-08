@@ -6,20 +6,20 @@ discussions-to: <URL>
 status: Draft
 type: Standards Track
 category: ERC
-created: 2023-06-14
-requires: EIP-721
+created: 2023-07-09
+requires: 721
 ---
 ## Abstract
 
-This EIP introduces an access control scheme termed Token-Controlled Token Circulation (TCTC). By representing the privileges associated with a role as an EIP-721 token (referred to as a `control token`), the processes of granting or revoking a role can be facilitated through the minting or burning of the corresponding `control token`. 
+This ERC introduces an access control scheme termed Token-Controlled Token Circulation (TCTC). By representing the privileges associated with a role as an [ERC-721](./eip-721.md) token (referred to as a `control token`), the processes of granting or revoking a role can be facilitated through the minting or burning of the corresponding `control token`. 
   
 ## Motivation
 
-There are numerous methods to implement access control for privileged actions. A commonly utilized pattern is "role-based" access control as specified in EIP-5982. This method, however, necessitates the use of an off-chain management tool to grant or revoke required roles through its interface. Additionally, as many wallets lack a user interface that displays the privileges granted by a role, users are often unable to comprehend the status of their privileges through the wallet.
+There are numerous methods to implement access control for privileged actions. A commonly utilized pattern is "role-based" access control as specified in [ERC-5982](./eip-5982.md). This method, however, necessitates the use of an off-chain management tool to grant or revoke required roles through its interface. Additionally, as many wallets lack a user interface that displays the privileges granted by a role, users are often unable to comprehend the status of their privileges through the wallet.
 
 ### Use Cases
 
-This EIP is applicable in many scenarios where role-based access control as described in EIP-5982 is used. Specific use cases include:
+This ERC is applicable in many scenarios where role-based access control as described in [ERC-5982](./eip-5982.md) is used. Specific use cases include:
 
 **Mint/Burn Permission:**
 In applications that circulate items such as tickets, coupons, membership cards, and site access rights as tokens, it is necessary to provide the system administrator with the authority to mint or burn these tokens. These permissions can be realized as `control tokens` in this scheme.
@@ -34,11 +34,11 @@ Many applications require address verification to prevent errors in the recipien
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
-1. Smart contracts implementing the EIP-XXXX(this EIP) standard MUST represent the privilege required by the role as an EIP-721 token. The tokens that represent privileges are called `control tokens` in this EIP. The `control token` can be any type of token, and its transactions may be recursively controlled by another `control token`.
+1. Smart contracts implementing the [ERC-5982](./eip-5982.md) (this ERC) standard MUST represent the privilege required by the role as an ERC-721 token. The tokens that represent privileges are called `control tokens` in this ERC. The `control token` can be any type of token, and its transactions may be recursively controlled by another `control token`.
 2. To associate the required `control token` with the role, the address of the previously deployed contract for the `control token` MUST be used.
-3. To ascertain whether an account possesses the necessary role, it SHOULD be confirmed that the balance of the `control token` exceeds 0, utilizing the `balanceOf` method defined in EIP-721.
-4. To grant a role to an account, a `control token` representing the privilege SHOULD be minted to the account using `safeMint` method defined in EIP-5679.
-5. To revoke a role from an account, the `control token` representing the privilege SHOULD be burned using the `burn` method defined in EIP-5679.
+3. To ascertain whether an account possesses the necessary role, it SHOULD be confirmed that the balance of the `control token` exceeds 0, utilizing the `balanceOf` method defined in ERC-721.
+4. To grant a role to an account, a `control token` representing the privilege SHOULD be minted to the account using `safeMint` method defined in [ERC-5679](./eip-5679.md).
+5. To revoke a role from an account, the `control token` representing the privilege SHOULD be burned using the `burn` method defined in ERC-5679.
 6. A role in a compliant smart contract is represented in the format of `bytes32`. It's RECOMMENDED the value of such role is computed as a `keccak256` hash of a string of the role name, in this format: `bytes32 role = keccak256("<role_name>")`. such as `bytes32 role = keccak256("MINTER")`.
   
 ## Rationale
@@ -47,7 +47,7 @@ TBD
 
 ## Backwards Compatibility
 
-This EIP is designed to be compatible for EIP-721, EIP-1155, and EIP-5679 respectively.
+This ERC is designed to be compatible for ERC-721, ERC-1155, and ERC-5679 respectively.
 
 ## Reference Implementation
 
@@ -119,7 +119,7 @@ contract MyToken is ERC721, TokenController {
     {
         _burn(tokenId);
     }
-}  
+}
 ```
   
 ## Security Considerations
