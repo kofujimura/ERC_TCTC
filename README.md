@@ -34,7 +34,7 @@ Many applications require address verification to prevent errors in the recipien
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
-1. Smart contracts implementing the [ERC-5982](./eip-5982.md) (this ERC) standard MUST represent the privilege required by the role as an ERC-721 token. The tokens that represent privileges are called `control tokens` in this ERC. The `control token` can be any type of token, and its transactions may be recursively controlled by another `control token`.
+1. Smart contracts implementing the [ERC-XXXX](./eip-XXXX.md) (this ERC) standard MUST represent the privilege required by the role as an ERC-721 token. The tokens that represent privileges are called `control tokens` in this ERC. The `control token` can be any type of token, and its transactions may be recursively controlled by another `control token`.
 2. To associate the required `control token` with the role, the address of the previously deployed contract for the `control token` MUST be used.
 3. To ascertain whether an account possesses the necessary role, it SHOULD be confirmed that the balance of the `control token` exceeds 0, utilizing the `balanceOf` method defined in ERC-721.
 4. To grant a role to an account, a `control token` representing the privilege SHOULD be minted to the account using `safeMint` method defined in [ERC-5679](./eip-5679.md).
